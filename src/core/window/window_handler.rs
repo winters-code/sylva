@@ -6,6 +6,7 @@ pub struct WindowHandler<'a> {
     display_manager: DisplayManager<'a>
 }
 
+#[allow(dead_code)]
 impl<'a> WindowHandler<'a> {
     pub fn new(settings: WindowSettings<'a>) -> WindowHandler<'a> {
         let mut _display_manager = DisplayManager::new(settings);
@@ -15,6 +16,7 @@ impl<'a> WindowHandler<'a> {
     }
 
     pub async fn start(&mut self) {
+        println!("Window has been run.");
         self.display_manager.start();
     }
 

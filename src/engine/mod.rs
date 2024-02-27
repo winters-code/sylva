@@ -1,2 +1,3 @@
-pub(in super) mod core;
+
+// Load all of the modules
 pub mod prelude;
