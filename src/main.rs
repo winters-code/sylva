@@ -1,11 +1,8 @@
 
-// Allow warnings because they are annoying when debugging
-#[allow(warnings)]
+pub mod engine;
 
-// Define the core modules as existent
-pub mod core;
+use engine::prelude::start_engine;
 
-// Create the new main function
 fn main() {
-
+    start_engine();
 }
