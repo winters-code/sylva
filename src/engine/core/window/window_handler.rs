@@ -1,23 +1,24 @@
 
-use glfw;
-use glfw::fail_on_errors;
-
 use super::super::dc::window_settings::WindowSettings;
 use super::display_manager::DisplayManager;
 
 pub struct WindowHandler<'a> {
-    display_handler: DisplayManager<'a>
+    display_manager: DisplayManager<'a>
 }
 
 impl<'a> WindowHandler<'a> {
     pub fn new(settings: WindowSettings<'a>) -> WindowHandler<'a> {
-        let _display_handler = DisplayManager::new(settings);
+        let mut _display_manager = DisplayManager::new(settings);
         WindowHandler {
-            display_handler: _display_handler
+            display_manager: _display_manager
         }
     }
 
-    pub fn display_handler(&self) -> &DisplayManager {
-        &self.display_handler
+    pub async fn start(&mut self) {
+        self.display_manager.start();
+    }
+
+    pub fn display_manager(&self) -> &DisplayManager {
+        &self.display_manager
     }
 }
