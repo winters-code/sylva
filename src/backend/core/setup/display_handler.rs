@@ -17,7 +17,7 @@ impl DisplayHandler {
 
         let mut _glfw = glfw::init(fail_on_errors!()).unwrap();
 
-        let (mut _glfw_window, _glfw_events) = _glfw.create_window(600, 300, "Test", glfw::WindowMode::Windowed)
+        let (mut _glfw_window, _glfw_events) = _glfw.create_window(800, 800, "Test", glfw::WindowMode::Windowed)
             .expect("GLFW failed to initialized");
 
         Self {
