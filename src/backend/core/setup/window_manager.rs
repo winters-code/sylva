@@ -2,7 +2,7 @@
 // Import the required handlers to make this work
 use super::display_handler::{DisplayHandler};
 use super::input_handler::{InputHandler, InputState};
-use super::traits::{WindowOwner};
+use super::super::traits::{WindowOwner};
 
 // Create the window manager
 pub struct WindowManager {

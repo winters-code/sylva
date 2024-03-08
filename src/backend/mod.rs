@@ -4,7 +4,8 @@ pub(in super) mod core;
 
 // Everything needed to start the engine
 use core::setup::{WindowManager};
-use core::setup::traits::WindowOwner;
+use core::traits::WindowOwner;
+use core::setup::InputState;
 
 // Start the engine
 pub async fn start() {
@@ -18,5 +19,8 @@ pub async fn start() {
 
         // Update the window
         _window_manager.update(&mut _input_handler);
+        if let InputState::Down | InputState::JustPressed = _input_handler.get_event("q") {
+            _window_manager.close();
+        }
     }
 }

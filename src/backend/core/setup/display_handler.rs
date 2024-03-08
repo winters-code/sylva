@@ -4,7 +4,7 @@ extern crate glfw;
 use glfw::fail_on_errors;
 
 use glfw::{Context};
-use super::traits::{WindowOwner};
+use super::super::traits::{WindowOwner};
 
 pub struct DisplayHandler {
     _glfw_window: glfw::PWindow,
