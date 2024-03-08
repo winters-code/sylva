@@ -5,6 +5,7 @@ use std::collections::{HashMap};
 use super::display_handler::{DisplayHandler};
 use glfw::{Action, Key};
 
+#[derive(Clone)]
 pub enum InputState {
     Up,
     Down,
@@ -13,7 +14,7 @@ pub enum InputState {
 }
 
 pub struct InputHandler {
-    _input_states: HashMap<&'static str, InputState>
+    _input_states: HashMap<String, InputState>
 }
 
 impl InputHandler {
@@ -23,15 +24,20 @@ impl InputHandler {
         }
     }
 
-    fn set_key(&mut self, key: &str, state: InputState) {
-        if let Some(x) = key.get_name() {
-            self._input_states.get_mut()
+    fn set_key(&mut self, key: Option<String>, state: InputState) {
+        if let Some(x) = key {
+            let mut key_index = self._input_states.get_mut(&x);
+            if let Some(y) = key_index {
+                *y = state;
+            } else {
+                self._input_states.insert(x, state);
+            }
         } else {
-            warn!("Key doesn't have name!");
+            println!("Key doesn't have name! key: {:?}", key);
         }
     }
 
-    fn handle_event(&self, e: glfw::WindowEvent) {
+    fn handle_event(&mut self, e: glfw::WindowEvent) {
         match e {
             glfw::WindowEvent::Key(key, _, action, _) => {
                 let input_state = if action == Action::Press { InputState::JustPressed }
@@ -43,16 +49,16 @@ impl InputHandler {
         }
     }
 
-    pub fn update(&self, display_handler: &mut DisplayHandler) {
+    pub fn update(&mut self, display_handler: &mut DisplayHandler) {
+        self._input_states.clear();
         display_handler.glfw().poll_events();
 
         for (_, event) in glfw::flush_messages(display_handler.events()) {
-            println!("{:?}", event);
             self.handle_event(event);
         }
     }
 
     pub fn get_event(&self, key: &str) -> InputState {
-        InputState::Up
+        self._input_states.get(key).unwrap_or(&InputState::Up).clone()
     }
 }

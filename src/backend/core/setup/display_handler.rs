@@ -38,6 +38,10 @@ impl DisplayHandler {
         !self._glfw_window.should_close()
     }
 
+    pub fn close(&mut self) {
+        self._glfw_window.set_should_close(true);
+    }
+
     pub fn init(&mut self) {
         self._glfw_window.make_current();
         self._glfw_window.set_key_polling(true);
@@ -45,8 +49,5 @@ impl DisplayHandler {
 
     pub fn update(&mut self, input: &InputHandler) {
         self._glfw_window.swap_buffers();
-        if let InputState::Down | InputState::JustReleased = input.get_event("close") {
-            self._glfw_window.set_should_close(true);
-        }
     }
 }
