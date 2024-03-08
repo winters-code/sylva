@@ -4,11 +4,22 @@ extern crate glfw;
 use glfw::fail_on_errors;
 
 use glfw::{Context};
+use super::traits::{WindowOwner};
 
 pub struct DisplayHandler {
     _glfw_window: glfw::PWindow,
     _glfw_events: glfw::GlfwReceiver<(f64, glfw::WindowEvent)>,
     _glfw: glfw::Glfw
+}
+
+impl WindowOwner for DisplayHandler {
+    fn is_open(&self) -> bool {
+        !self._glfw_window.should_close()
+    }
+
+    fn close(&mut self) {
+        self._glfw_window.set_should_close(true);
+    }
 }
 
 impl DisplayHandler {
@@ -31,14 +42,6 @@ impl DisplayHandler {
     }
     pub fn events(&self) -> &glfw::GlfwReceiver<(f64, glfw::WindowEvent)> {
         &self._glfw_events
-    }
-
-    pub fn is_open(&self) -> bool {
-        !self._glfw_window.should_close()
-    }
-
-    pub fn close(&mut self) {
-        self._glfw_window.set_should_close(true);
     }
 
     pub fn init(&mut self) {

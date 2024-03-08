@@ -1,10 +1,13 @@
 
+// Use GLFW
 extern crate glfw;
 
-use std::collections::{HashMap};
+// Import alll needed code
 use super::display_handler::{DisplayHandler};
+use std::collections::{HashMap};
 use glfw::{Action};
 
+// Create the enum for various input states
 #[derive(Clone)]
 pub enum InputState {
     Up,
@@ -13,22 +16,33 @@ pub enum InputState {
     JustReleased
 }
 
+// Base struct for handling input
 pub struct InputHandler {
     _input_states: HashMap<String, InputState>
 }
 
+// Implement the functions for the input handler
 impl InputHandler {
+
+    // Create a new input handler
     pub fn new() -> Self {
         Self {
             _input_states: HashMap::new()
         }
     }
 
+    // Set a key to have a value
     fn set_key(&mut self, key: Option<String>, state: InputState) {
+
+        // If the key exists
         if let Some(x) = key {
+
+            // If the index is a thing, set that key to that value
             let key_index = self._input_states.get_mut(&x);
             if let Some(y) = key_index {
                 *y = state;
+            
+            // If the index doesn't exist, insert it
             } else {
                 self._input_states.insert(x, state);
             }
