@@ -3,7 +3,7 @@ extern crate glfw;
 
 use std::collections::{HashMap};
 use super::display_handler::{DisplayHandler};
-use glfw::{Action, Key};
+use glfw::{Action};
 
 #[derive(Clone)]
 pub enum InputState {
@@ -26,7 +26,7 @@ impl InputHandler {
 
     fn set_key(&mut self, key: Option<String>, state: InputState) {
         if let Some(x) = key {
-            let mut key_index = self._input_states.get_mut(&x);
+            let key_index = self._input_states.get_mut(&x);
             if let Some(y) = key_index {
                 *y = state;
             } else {

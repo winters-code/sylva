@@ -1,5 +1,4 @@
 
-#![allow(warnings)]
 // Mark all needed modules as public
 pub mod backend;
 

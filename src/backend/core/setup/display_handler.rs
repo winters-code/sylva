@@ -2,7 +2,6 @@
 extern crate glfw;
 
 use glfw::fail_on_errors;
-use super::input_handler::{InputHandler, InputState};
 
 use glfw::{Context};
 
@@ -47,7 +46,7 @@ impl DisplayHandler {
         self._glfw_window.set_key_polling(true);
     }
 
-    pub fn update(&mut self, input: &InputHandler) {
+    pub fn update(&mut self) {
         self._glfw_window.swap_buffers();
     }
 }
