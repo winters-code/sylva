@@ -16,7 +16,7 @@ pub struct Input {
     _inputs: HashMap<String, InputState>
 }
 
-pub fn get_state_from(state: glfw::Action) -> InputState {
+fn get_state_from(state: glfw::Action) -> InputState {
     match state {
         (glfw::Action::Press) => {InputState::JustPressed},
         (glfw::Action::Release) => {InputState::JustReleased},
@@ -25,7 +25,7 @@ pub fn get_state_from(state: glfw::Action) -> InputState {
 }
 
 type k = glfw::Key;
-pub fn get_key_name(key: k) -> String {
+fn get_key_name(key: k) -> String {
     if let Some(_name) = glfw::get_key_name(Some(key), None) {
         _name
     } else {
