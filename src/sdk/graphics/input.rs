@@ -2,8 +2,26 @@
 extern crate glfw;
 
 use super::display::Display;
+use std::collections::HashMap;
+
+#[derive(Debug, PartialEq)]
+pub enum InputState {
+    JustPressed,
+    JustReleased,
+    HeldDown,
+    Released
+}
 
 pub struct Input {
+    _inputs: HashMap<String, InputState>
+}
+
+pub fn get_state_from(state: glfw::Action) -> InputState {
+    match state {
+        (glfw::Action::Press) => {InputState::JustPressed},
+        (glfw::Action::Release) => {InputState::JustReleased},
+        (glfw::Action::Repeat) => {InputState::HeldDown}
+    }
 }
 
 type k = glfw::Key;
@@ -50,21 +68,51 @@ pub fn get_key_name(key: k) -> String {
 impl Input {
     pub fn new() -> Self {
         Self {
+            _inputs: HashMap::new()
         }
     }
 
     pub fn update(&mut self, _d: &mut Display) {
+        self.reset_input();
+
         _d.get_glfw_mut().poll_events();
 
         for (_, e) in glfw::flush_messages(_d.get_events()) {
-            match e {
-                glfw::WindowEvent::Key(k, sc, state, _) => {
-                    if k as i32 != -1 {
-                        println!("{:?}", get_key_name(k));
-                    }
-                },
+            self.handle_event(e);
+        }
+    }
+
+    fn reset_input(&mut self) {
+        for (k, val) in self._inputs.iter_mut() {
+            match val {
+                (InputState::JustPressed) => {*val = InputState::HeldDown},
+                (InputState::JustReleased) => {*val = InputState::Released},
                 _ => {}
             }
         }
+    }
+
+    fn handle_event(&mut self, e: glfw::WindowEvent) {
+        match e {
+            glfw::WindowEvent::Key(k, sc, state, _) => {
+                let name = get_key_name(k);
+                let state = get_state_from(state);
+                self.set_input(name, state);
+            },
+            _ => {}
+        }
+    }
+
+    fn set_input(&mut self, name: String, state: InputState) {
+        let key = self._inputs.get_mut(&name);
+        if let Some(k) = key {
+            *k = state;
+        } else {
+            self._inputs.insert(name, state);
+        }
+    }
+
+    pub fn get_state(&self, key: &str) -> &InputState {
+        self._inputs.get(&String::from(key)).unwrap_or(&InputState::Released)
     }
 }

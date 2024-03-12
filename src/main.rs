@@ -1,6 +1,6 @@
 
 // Allow dead code, for clean logs
-#[allow(dead_code, unused_imports)]
+#[allow(warnings)]
 
 // Load the main module
 pub mod sdk;

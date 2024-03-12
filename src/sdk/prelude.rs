@@ -10,5 +10,9 @@ pub async fn start_engine() {
     while !_w.should_close() {
         _w.update(&mut _i);
         _w.render();
+
+        if _i.get_state("escape") == &InputState::JustPressed {
+            _w.close();
+        }
     }
 }
