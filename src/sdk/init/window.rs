@@ -1,15 +1,18 @@
 
 use super::display::Display;
 use super::input::Input;
+use super::window_settings::WindowSettings;
 
 pub struct Window {
-    _display: Display
+    _display: Display,
+    _settings: WindowSettings
 }
 
 impl Window {
-    pub fn new() -> Self {
+    pub fn new(_s: WindowSettings) -> Self {
         Self {
-            _display: Display::new()
+            _display: Display::new(),
+            _settings: _s
         }
     }
 
@@ -37,5 +40,9 @@ impl Window {
     }
     pub fn get_display_mut(&mut self) -> &mut Display {
         &mut self._display
+    }
+    
+    pub fn get_settings(&self) -> &WindowSettings {
+        &self._settings
     }
 }

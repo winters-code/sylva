@@ -1,8 +1,9 @@
 
-use crate::sdk::graphics::prelude::*;
+use crate::sdk::init::prelude::*;
+pub use crate::sdk::init::window_settings::WindowSettings;
 
-pub async fn start_engine() {
-    let mut _w = create_window();
+pub async fn start_engine(_s: WindowSettings) {
+    let mut _w = create_window(_s);
     let mut _i = create_input();
     
     _w.init();

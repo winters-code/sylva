@@ -11,5 +11,12 @@ use sdk::prelude::*;
 
 // Run the code
 fn main() {
-    pollster::block_on(start_engine());
+    pollster::block_on(
+        start_engine(
+            WindowSettings::new(
+                (640u32, 480u32),
+                String::from("Window Title")
+            )
+        )
+    );
 }
