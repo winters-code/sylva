@@ -1,9 +1,12 @@
 
+// Load GLFW for the input stuff
 extern crate glfw;
 
+// Use all the required libraries + files
 use super::display::Display;
 use std::collections::HashMap;
 
+// Create the input state enum
 #[derive(Debug, PartialEq)]
 pub enum InputState {
     JustPressed,
@@ -12,10 +15,12 @@ pub enum InputState {
     Released
 }
 
+// Create the base input structure
 pub struct Input {
     _inputs: HashMap<String, InputState>
 }
 
+// Get the state from a GLFW action
 fn get_state_from(state: glfw::Action) -> InputState {
     match state {
         (glfw::Action::Press) => {InputState::JustPressed},
@@ -24,13 +29,24 @@ fn get_state_from(state: glfw::Action) -> InputState {
     }
 }
 
+// Simple type alias for GLFW keys
 type k = glfw::Key;
+
+// Get the key name from a key
 fn get_key_name(key: k) -> String {
+
+    // If the key exists
     if key != k::Unknown {
+
+        // If the key name exists
         if let Some(_name) = glfw::get_key_name(Some(key), None) {
+
+            //Return the key name
             return _name;
         }
     }
+
+    // If either of the previous ones failed, use this MASSIVE `match` statement to trun them into a string
     match key {
         (k::Space) => {String::from("space")},
         (k::LeftSuper) => {String::from("left_meta")},
@@ -66,25 +82,38 @@ fn get_key_name(key: k) -> String {
     }
 }
 
+// Implement the functions for the input struct
 impl Input {
+
+    // Create a new empty Input struct
     pub fn new() -> Self {
         Self {
             _inputs: HashMap::new()
         }
     }
 
+    // Update the inputs received
     pub fn update(&mut self, _d: &mut Display) {
+
+        // Reset the inputs pressed
         self.reset_input();
 
+        // Poll the events
         _d.get_glfw_mut().poll_events();
 
+        // For each event polled, handle it
         for (_, e) in glfw::flush_messages(_d.get_events()) {
             self.handle_event(e);
         }
     }
 
+    // Reset the nputs pressed
     fn reset_input(&mut self) {
+
+        // For each key input in the _inputs hashmap
         for (k, val) in self._inputs.iter_mut() {
+
+            // Set it to the next state it should be
             match val {
                 (InputState::JustPressed) => {*val = InputState::HeldDown},
                 (InputState::JustReleased) => {*val = InputState::Released},
@@ -93,19 +122,33 @@ impl Input {
         }
     }
 
+    // Handle a single event
     fn handle_event(&mut self, e: glfw::WindowEvent) {
+
+        // To make sure we're only handling what we can handle
         match e {
+
+            // Handle a key press
             glfw::WindowEvent::Key(k, sc, state, _) => {
+
+                // Get the name and the state of the key, and set the input state.
                 let name = get_key_name(k);
                 let state = get_state_from(state);
                 self.set_input(name, state);
             },
+
+            // To not cause errors for the other possible states
             _ => {}
         }
     }
 
+    // Set the state of a specific input
     fn set_input(&mut self, name: String, state: InputState) {
+
+        // Get the key
         let key = self._inputs.get_mut(&name);
+
+        // If the key exists, set that key in the dictionary to the state
         if let Some(k) = key {
             *k = state;
         } else {
@@ -113,6 +156,7 @@ impl Input {
         }
     }
 
+    // Get the state of a key
     pub fn get_state(&self, key: &str) -> &InputState {
         self._inputs.get(&String::from(key)).unwrap_or(&InputState::Released)
     }
